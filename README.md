@@ -1,6 +1,5 @@
-Hier ist eine überarbeitete, professionelle und optisch klar strukturierte README.md. Sie ist so gestaltet, dass sie auf GitHub direkt Vertrauen erweckt – ohne Emojis, aber durch klare visuelle Hierarchien.
-
 KINETIC - Live Environment Monitoring System
+
 KINETIC is a modular, high-performance system designed for real-time environmental data monitoring. It handles the ingestion, automated transformation, and visualization of complex sensor data streams, including PM2.5, PM10, NO2, and Ozone levels.
 
 Architecture Overview
