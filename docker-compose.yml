@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # Die Event-Queue (In-Memory für maximale Geschwindigkeit)
+  kinetic-redis:
+    image: redis:7-alpine
+    container_name: kinetic-redis
+    restart: always
+    ports:
+      - "6379:6379" # Port nach außen für lokales Debugging
+    volumes:
+      - redis_data:/data
+    networks:
+      - kinetic-network
+
+  # Der Datenspeicher für unsere Event-Logs & Audits
+  kinetic-mongo:
+    image: mongo:6.0
+    container_name: kinetic-mongo
+    restart: always
+    ports:
+      - "27017:27017" # Port nach außen, damit du mit MongoDB Compass draufschauen kannst
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secretpassword
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - kinetic-network
+
+# Das isolierte Sicherheits-Netzwerk
+networks:
+  kinetic-network:
+    driver: bridge
+
+# Persistente Speicher-Volumes, damit die Daten beim Container-Stopp nicht verloren gehen
+volumes:
+  redis_data:
+  mongo_data:

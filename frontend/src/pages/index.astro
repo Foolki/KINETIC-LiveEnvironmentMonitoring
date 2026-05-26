@@ -1,0 +1,52 @@
+---
+// 1. DER CODE-ZAUN: Hier müssen wir 'logs' definieren, damit TypeScript es findet!
+import { DashboardTable } from "../components/DashboardTable";
+
+let logs = [];
+let errorMessage = null;
+
+try {
+	// Wir holen die aktuellen Daten live von deinem Express-Backend (Port 3000)
+	const response = await fetch("http://localhost:3000/api/v1/admin/events");
+
+	if (response.ok) {
+		logs = await response.json();
+	} else {
+		errorMessage = `Backend-Fehler: Status ${response.status}`;
+	}
+} catch (error) {
+	console.error("Fehler beim Abrufen der Webhook-Logs:", error);
+	errorMessage =
+		"Der Express-Server (Port 3000) ist offline oder nicht erreichbar.";
+}
+---
+
+<html lang="de">
+	<head>
+		<meta charset="utf-8" />
+		<title>KINETIC - Eco Air Quality Control Center</title>
+		<meta name="viewport" content="width=device-width" />
+	</head>
+	<body class="bg-slate-950 text-white min-h-screen p-8">
+		<div class="max-w-7xl mx-auto">
+			<header class="mb-8">
+				<h1 class="text-3xl font-black text-emerald-400 tracking-tight">
+					KINETIC
+				</h1>
+				<p class="text-slate-400 text-sm mt-1">
+					Enterprise Control Center — Live Environment Monitoring
+				</p>
+			</header>
+
+			{
+				errorMessage && (
+					<div class="bg-rose-500/10 border border-rose-500/20 text-rose-400 p-4 rounded-xl mb-6 text-sm font-mono">
+						⚠️ {errorMessage}
+					</div>
+				)
+			}
+
+			<DashboardTable logs={logs} client:load />
+		</div>
+	</body>
+</html>
